@@ -1,3 +1,5 @@
+package BinaryTrees;
+
 class Node{
     int data;
     Node left=null;
@@ -20,7 +22,10 @@ public class SegmentTree{
        root= generateTree(arr,0,arr.length-1);
        display();
 
-       System.out.println("The Sum of indexes is "+query(1,3));
+
+       update(3,45);
+        display();
+
     }
 
     public static Node generateTree(int []arr,int start,int end){
@@ -65,6 +70,26 @@ public class SegmentTree{
             return 0;
         }
         return query(node.left,si,ei)+query(node.right,si,ei);
+    }
+
+    public static void update(int index,int value){
+        update(root,index,value);
+    }
+    public static int update(Node node,int index,int value){
+     if (index >= node.startIndex&& index <= node.endIndex){
+      if(index == node.startIndex && index == node.endIndex) {
+        node.data = value;
+        return node.data;
+      } else {
+        int leftAns = update(node.left, index, value);
+        int rightAns = update(node.right, index, value);
+        node.data = leftAns + rightAns;
+        return node.data;
+      }
+    }
+    return node.data;
+
+        
     }
 
 }
