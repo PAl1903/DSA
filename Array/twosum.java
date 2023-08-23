@@ -4,48 +4,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import Array.*;
 
- public class twosum {
+public class twosum {
 
     public static void main(String[] args) {
         twosum tw = new twosum();
-        int[] arr = { 1, 2, 3, 4, 5 };
-        int target = 4;
+        int[] arr = { 1, 3, 4, 5 ,2,2,3,-1,-5,6,9,2,8,-6,-2};
+        int target = 6;
 
-        ArrayList<Pair> pair = tw.sum(arr, target, 0);
+        ArrayList<Pair> pairs = tw.sum(arr, target);
 
-        for (int i = 0; i < pair.size(); i++) {
-            System.out.println(pair.get(i));
+        for (int i = 0; i < pairs.size(); i++) {
+            System.out.println(pairs.get(i));
         }
     }
 
-     
+    ArrayList<Pair> sum(int[] arr, int target) {
+    	   HashMap<Integer, Integer> map = new HashMap<>();
+           ArrayList<Pair> arr2 = new ArrayList<>();
 
-    ArrayList<Pair> sum(int[] arr, int target, int n) {
-
-        HashMap<Integer, Integer> map = new HashMap<>();
-        ArrayList<Pair> arr2 = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-        }
-        int prev = map.size();
-
-        Iterator hmIterator = map.entrySet().iterator();
-
-        while (hmIterator.hasNext()) {
-            Map.Entry mapElement = (Map.Entry) hmIterator.next();
-
-            int value = (int) mapElement.getValue();
-            if (map.containsKey(Math.abs(value - target)) && map.get(Math.abs(value - target)) > 0) {
-                arr2.add(new Pair(value, Math.abs(value - target)));
-                map.put(value, map.get(value) - 1);
-                map.put(Math.abs(value - target), map.get(Math.abs(value - target)) - 1);
-            }
-        }
+           for (int num : arr) {
+               int complement = target - num;
+               if (map.containsKey(complement) && map.get(complement) > 0) {
+                   arr2.add(new Pair(num, complement));
+                   if(map.get(num)!=null) {
+                   map.put(num, map.get(num) - 1);
+                   }
+                   map.put(complement, map.get(complement) - 1);
+               } else {
+                   map.put(num, map.getOrDefault(num, 0) + 1);
+               }
+           }
         return arr2;
     }
 }
+
 class Pair {
     int num1;
     int num2;
@@ -54,5 +47,9 @@ class Pair {
         this.num1 = num1;
         this.num2 = num2;
     }
-}
 
+    @Override
+    public String toString() {
+        return "(" + num1 + ", " + num2 + ")";
+    }
+}
